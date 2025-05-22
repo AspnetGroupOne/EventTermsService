@@ -1,12 +1,13 @@
 ﻿using Application.Data.Context;
 using Application.Entity;
+using Application.Interfaces;
 using Application.Models.Response;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Application.Data.Repository;
 
-public class TermsRepository<TermsEntity>(DataContext context) where TermsEntity : class
+public class TermsRepository(DataContext context) : ITermsRepository
 {
     protected readonly DataContext _context = context;
     protected readonly DbSet<TermsEntity> _terms = context.Set<TermsEntity>();
@@ -32,7 +33,7 @@ public class TermsRepository<TermsEntity>(DataContext context) where TermsEntity
             if (expression == null) { return RepositoryResponse.Error("Expression is null."); }
 
             var exists = await _terms.AnyAsync(expression);
-            if(!exists) { return RepositoryResponse.NotFound("Entity not found."); }
+            if (!exists) { return RepositoryResponse.NotFound("Entity not found."); }
 
             return RepositoryResponse.Ok();
         }
