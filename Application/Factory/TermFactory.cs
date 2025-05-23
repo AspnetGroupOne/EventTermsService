@@ -20,6 +20,7 @@ public class TermFactory
             }).ToList()
         };
     }
+
     public static TermsEntity Create(UpdateTermsForm form)
     {
         if (form == null) return null!;

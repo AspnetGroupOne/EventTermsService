@@ -49,8 +49,7 @@ public class TermsRepository(DataContext context) : ITermsRepository
         {
             if (expression == null) { return RepositoryResponse<TermsEntity>.Error("Expression is null.", null); }
 
-            var entity = await _terms.FirstOrDefaultAsync(expression);
-
+            var entity = await _terms.Include(e => e.Section).FirstOrDefaultAsync(expression);
             if (entity == null) { return RepositoryResponse<TermsEntity>.Error("Entity is null.", null); }
 
             return RepositoryResponse<TermsEntity>.Ok(entity);
