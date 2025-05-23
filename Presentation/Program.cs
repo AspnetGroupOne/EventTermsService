@@ -4,6 +4,7 @@ using Application.External.Interfaces;
 using Application.External.Models;
 using Application.External.Services;
 using Application.Interfaces;
+using Application.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,7 @@ builder.Services.AddHttpClient<IEventValidationService, EventValidationService>(
 
 
 builder.Services.AddScoped<ITermsRepository, TermsRepository>();
-
+builder.Services.AddScoped<ITermsService, TermsService>();
 
 
 
