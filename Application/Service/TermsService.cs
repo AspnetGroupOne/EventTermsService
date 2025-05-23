@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace Application.Service;
 
-public class TermsService(ITermsRepository repository)
+public class TermsService(ITermsRepository repository) : ITermsService
 {
     private readonly ITermsRepository _repository = repository;
 
@@ -67,7 +67,7 @@ public class TermsService(ITermsRepository repository)
         try
         {
             if (eventId == null) { return ServiceResponse.Error("Cannot remove a null eventId."); }
-            
+
             var entity = await _repository.GetTermsAsync(e => e.EventId == eventId);
             if (entity.Content == null) { return ServiceResponse.NotFound(entity.Message); }
 
