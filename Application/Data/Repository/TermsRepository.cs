@@ -18,6 +18,9 @@ public class TermsRepository(DataContext context) : ITermsRepository
         {
             if (entity == null) { return RepositoryResponse.Error("Entity is null."); }
 
+            var exists = await ExistsTermsAsync(e => e.EventId == entity.EventId);
+            if (exists.Success) { return RepositoryResponse.AlreadyExists("Entity with this id already exists."); }
+
             await _terms.AddAsync(entity);
             await _context.SaveChangesAsync();
 
