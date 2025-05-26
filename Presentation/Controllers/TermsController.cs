@@ -17,7 +17,21 @@ public class TermsController(ITermsService service, IEventValidationService vali
     [HttpPost]
     public async Task<IActionResult> CreateTerms([FromBody] AddTermsForm addForm)
     {
-        if (!ModelState.IsValid) {  return BadRequest(ModelState); }
+        if (!ModelState.IsValid) {
+            var errors = ModelState
+            .Where(ms => ms.Value?.Errors.Count > 0)
+            .Select(kvp => new
+            {
+                Field = kvp.Key,
+                Errors = kvp.Value!.Errors.Select(e => e.ErrorMessage).ToList()
+            });
+
+            return BadRequest(new
+            {
+                message = "Model validation failed.",
+                errors
+            });
+        }
 
         //var existanceCheck = await _validation.EventExistance(addForm.EventId);
         //if (!existanceCheck.Success) { return BadRequest("Event with this id does not exist."); }
