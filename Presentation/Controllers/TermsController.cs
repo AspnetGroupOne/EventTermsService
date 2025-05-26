@@ -15,7 +15,7 @@ public class TermsController(ITermsService service, IEventValidationService vali
     private readonly IEventValidationService _validation = validationService;
 
     [HttpPost]
-    public async Task<IActionResult> CreateTerms(AddTermsForm addForm)
+    public async Task<IActionResult> CreateTerms([FromBody] AddTermsForm addForm)
     {
         if (!ModelState.IsValid) {  return BadRequest(ModelState); }
 
@@ -29,7 +29,7 @@ public class TermsController(ITermsService service, IEventValidationService vali
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateTerms(UpdateTermsForm updateForm)
+    public async Task<IActionResult> UpdateTerms([FromBody] UpdateTermsForm updateForm)
     {
         if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
