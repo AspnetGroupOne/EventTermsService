@@ -61,11 +61,14 @@ public class TermsRepository(DataContext context) : ITermsRepository
     {
         try
         {
-            if (entity == null) { return RepositoryResponse.Error("Entity is null."); }
+            if (entity == null) return RepositoryResponse.Error("Entity is null.");
 
-            _terms.Update(entity);
+            var existing = await _terms.Include(e => e.Section).FirstOrDefaultAsync(e => e.EventId == entity.EventId);
+            if (existing == null) return RepositoryResponse.NotFound("Entity with this EventId does not exist.");
+
+            existing.Section = entity.Section;
+
             await _context.SaveChangesAsync();
-
             return RepositoryResponse.Ok();
         }
         catch (Exception ex) { return RepositoryResponse.Error(ex.Message); }
