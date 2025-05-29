@@ -3,10 +3,12 @@ using Application.Interfaces;
 using Application.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Extensions.Attributes;
 using System.Runtime.CompilerServices;
 
 namespace Presentation.Controllers;
 
+[UseApiKey]
 [Route("api/[controller]")]
 [ApiController]
 public class TermsController(ITermsService service, IEventValidationService validationService) : ControllerBase
