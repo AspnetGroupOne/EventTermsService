@@ -8,6 +8,7 @@ namespace Application.External.Services;
 
 public class EventValidationService : IEventValidationService
 {
+    // This service is made with help from chatgpt to validate that an event exists. 
 
     private readonly HttpClient _httpClient;
     private readonly string _apiUrl;
