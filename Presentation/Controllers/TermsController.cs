@@ -19,6 +19,7 @@ public class TermsController(ITermsService service, IEventValidationService vali
     [HttpPost]
     public async Task<IActionResult> CreateTerms([FromBody] AddTermsForm addForm)
     {
+        // This modelstate check is from chatgpt for error checking while trying to find the issues that i had during launch of this MS.
         if (!ModelState.IsValid) {
             var errors = ModelState
             .Where(ms => ms.Value?.Errors.Count > 0)
@@ -35,6 +36,7 @@ public class TermsController(ITermsService service, IEventValidationService vali
             });
         }
 
+        // Only have this check when adding new. 
         //var existanceCheck = await _validation.EventExistance(addForm.EventId);
         //if (!existanceCheck.Success) { return BadRequest("Event with this id does not exist."); }
 

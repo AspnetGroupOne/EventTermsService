@@ -2,6 +2,5 @@
 
 public class EventSettings
 {
-
     public string Url { get; set; } = null!;
 }

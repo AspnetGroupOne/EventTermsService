@@ -1,9 +1,8 @@
 ﻿using Application.External.Reponse;
 
-namespace Application.External.Interfaces
+namespace Application.External.Interfaces;
+
+public interface IEventValidationService
 {
-    public interface IEventValidationService
-    {
-        Task<ExternalResponse> EventExistance(string eventId);
-    }
+    Task<ExternalResponse> EventExistance(string eventId);
 }
