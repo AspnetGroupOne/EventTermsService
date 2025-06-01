@@ -1,14 +1,17 @@
 ﻿using Application.External.Interfaces;
 using Application.Interfaces;
 using Application.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Documentation_Swagger;
 using Presentation.Extensions.Attributes;
-using System.Runtime.CompilerServices;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Presentation.Controllers;
 
 [UseApiKey]
+[Consumes("application/json")]
+[Produces("application/json")]
 [Route("api/[controller]")]
 [ApiController]
 public class TermsController(ITermsService service, IEventValidationService validationService) : ControllerBase
@@ -17,6 +20,10 @@ public class TermsController(ITermsService service, IEventValidationService vali
     private readonly IEventValidationService _validation = validationService;
 
     [HttpPost]
+    [SwaggerOperation(Summary = "Adds terms to an event.")]
+    [SwaggerResponse(200, "Added terms to the specified event.")]
+    [SwaggerResponse(400, "The AddTermsForm was either containing invalid or missing properties.")]
+    [SwaggerRequestExample(typeof(AddTermsForm), typeof(AddTermsForm_Example))]
     public async Task<IActionResult> CreateTerms([FromBody] AddTermsForm addForm)
     {
         // This modelstate check is from chatgpt for error checking while trying to find the issues that i had during launch of this MS.
@@ -37,8 +44,8 @@ public class TermsController(ITermsService service, IEventValidationService vali
         }
 
         // Only have this check when adding new. 
-        //var existanceCheck = await _validation.EventExistance(addForm.EventId);
-        //if (!existanceCheck.Success) { return BadRequest("Event with this id does not exist."); }
+        var existanceCheck = await _validation.EventExistance(addForm.EventId);
+        if (!existanceCheck.Success) { return BadRequest("Event with this id does not exist."); }
 
         var result = await _service.AddTermsAsync(addForm);
         if (!result.Success) { return BadRequest(result); }
@@ -47,6 +54,10 @@ public class TermsController(ITermsService service, IEventValidationService vali
     }
 
     [HttpPut]
+    [SwaggerOperation(Summary = "Updates terms of a specified event.")]
+    [SwaggerResponse(200, "Updated the terms of the specified event.")]
+    [SwaggerResponse(400, "The UpdateTermsForm was either containing invalid or missing properties.")]
+    [SwaggerRequestExample(typeof(UpdateTermsForm), typeof(UpdateTermsForm_Example))]
     public async Task<IActionResult> UpdateTerms([FromBody] UpdateTermsForm updateForm)
     {
         if (!ModelState.IsValid) { return BadRequest(ModelState); }
@@ -58,6 +69,9 @@ public class TermsController(ITermsService service, IEventValidationService vali
     }
 
     [HttpGet("{eventId}")]
+    [SwaggerOperation(Summary = "Updates terms of a specified event.")]
+    [SwaggerResponse(200, "Gets the terms of the specified event.")]
+    [SwaggerResponse(400, "The eventid was null.")]
     public async Task<IActionResult> GetTerms(string eventId)
     {
         if (eventId == null) { return BadRequest("EntityId is null."); }
@@ -69,6 +83,9 @@ public class TermsController(ITermsService service, IEventValidationService vali
     }
 
     [HttpDelete("{eventId}")]
+    [SwaggerOperation(Summary = "Updates terms of a specified event.")]
+    [SwaggerResponse(200, "Deleted the terms of the specified event.")]
+    [SwaggerResponse(400, "The eventid was null.")]
     public async Task<IActionResult> DeleteTerms(string eventId)
     {
         if (eventId == null) { return BadRequest("EntityId is null."); }
