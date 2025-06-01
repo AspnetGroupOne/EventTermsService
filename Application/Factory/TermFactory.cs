@@ -5,7 +5,8 @@ namespace Application.Factory;
 
 public class TermFactory
 {
-    //Factory made by chatgpt.
+    //Whole factory made by chatgpt to speed things up.
+
     public static TermsEntity Create(AddTermsForm form)
     {
         if (form == null) return null!;

@@ -6,7 +6,8 @@ namespace Application.Models;
 
 public class TermsSection
 {
-    // TermsSection from chatgpt to make it work hopefully.
+    // Got help from chatgpt to make this work. 
+
     [Key]
     public int Id { get; set; }
 
